@@ -1,8 +1,10 @@
 import { Reserve } from './scrape'
 
 function dateToMinimumISOString(date: Date) {
-  if (date.getHours() === 0 && date.getMinutes() === 0) {
-    return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`
+  if (date.getUTCHours() === 15 && date.getUTCMinutes() === 0) {
+    date.setHours(date.getHours() + 9)
+
+    return `${date.getUTCFullYear()}${String(date.getUTCMonth() + 1).padStart(2, '0')}${String(date.getUTCDate()).padStart(2, '0')}`
   }
 
   return date
