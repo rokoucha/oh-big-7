@@ -4,13 +4,16 @@ function dateToMinimumISOString(date: Date) {
   if (date.getUTCHours() === 15 && date.getUTCMinutes() === 0) {
     date.setHours(date.getHours() + 9)
 
-    return `${date.getUTCFullYear()}${String(date.getUTCMonth() + 1).padStart(2, '0')}${String(date.getUTCDate()).padStart(2, '0')}`
+    return `;VALUE=DATE:${date.getUTCFullYear()}${String(date.getUTCMonth() + 1).padStart(2, '0')}${String(date.getUTCDate()).padStart(2, '0')}`
   }
 
-  return date
-    .toISOString()
-    .replaceAll(/[-:]/g, '')
-    .replaceAll(/\.\d{3}/g, '')
+  return (
+    ':' +
+    date
+      .toISOString()
+      .replaceAll(/[-:]/g, '')
+      .replaceAll(/\.\d{3}/g, '')
+  )
 }
 
 export function genereteIcalFromReserves(
@@ -34,9 +37,9 @@ ${reserves
   .map((r) =>
     `
 BEGIN:VEVENT
-DTSTAMP:${dateToMinimumISOString(new Date())}
-DTSTART:${dateToMinimumISOString(r.from)}
-DTEND:${dateToMinimumISOString(r.to)}
+DTSTAMP${dateToMinimumISOString(new Date())}
+DTSTART${dateToMinimumISOString(r.from)}
+DTEND${dateToMinimumISOString(r.to)}
 SUMMARY:${r.type} ${r.slot} ${r.description}
 LOCATION:${location}
 UID:${r.from.getTime()}@oh-big-7
